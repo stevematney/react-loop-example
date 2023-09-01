@@ -1,26 +1,26 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./App.css";
+import BlackBoxSelect from "./BlackBoxSelect";
+
+const people = ["Steve M.", "Ken A.", "Joe S"];
 
 function App() {
-  const [selectedPeople, setSelectedPeople] = useState<string[]>([]);
   const [selectedNames, setSelectedNames] = useState<string[]>([]);
-
-  useEffect;
 
   return (
     <>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+      <h1>Black Box Select Test</h1>
+      <p>Selected People: {selectedNames.join(", ")}</p>
+      <div style={{ margin: 20 }}>
+        <BlackBoxSelect
+          items={people}
+          onChange={(newSelectedPeople) => {
+            setSelectedNames(
+              newSelectedPeople.map((person) => person.split(" ")[0])
+            );
+          }}
+        />
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   );
 }
