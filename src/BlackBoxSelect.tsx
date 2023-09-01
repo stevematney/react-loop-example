@@ -21,10 +21,13 @@ const BlackBoxLabel = styled.label`
 
 const BlackBoxSelect: React.FC<{
   items: string[];
-  onChange: (selectedItems: string[]) => void;
-}> = ({ items }) => {
+  onChange?: (selectedItems: string[]) => void;
+}> = (props) => {
+  const { items } = props;
+  const propsRef = useRef(props);
+  propsRef.current = props;
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
-  const initialRender = useRef(true);
+  const hasRendered = useRef(false);
 
   const updateItems = (item: string) =>
     setSelectedItems((oldItems) =>
@@ -34,7 +37,13 @@ const BlackBoxSelect: React.FC<{
     );
 
   useEffect(() => {
-    initialRender.current = true;
+    if (!hasRendered.current) return;
+
+    propsRef.current.onChange?.(selectedItems);
+  }, [selectedItems]);
+
+  useEffect(() => {
+    hasRendered.current = true;
   }, []);
 
   return (
